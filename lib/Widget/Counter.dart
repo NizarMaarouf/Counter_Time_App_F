@@ -12,15 +12,19 @@ class CounterDownApp extends StatefulWidget {
 }
 
 class _CounterDownAppState extends State<CounterDownApp> {
+  //
   int countdown = 7;
+  //we must put the ? in the end of Timer .....
+  Timer? downSeconds;
 
   startTimer() {
-    Timer downSeconds = Timer.periodic(Duration(seconds: 1), (test) {
+    downSeconds = Timer.periodic(Duration(seconds: 1), (test) {
       setState(() {
         if (countdown > 0) {
           countdown--;
         } else {
-          test.cancel();
+          // so we put ! here too
+          // downSeconds!.cancel();
         }
       });
     });
@@ -28,8 +32,9 @@ class _CounterDownAppState extends State<CounterDownApp> {
 
   rsetTimer() {
     setState(() {
-      if (countdown == 0) {
+      if (countdown >= 0 || countdown == '👌') {
         countdown = 7;
+       
       }
     });
   }
@@ -41,7 +46,7 @@ class _CounterDownAppState extends State<CounterDownApp> {
         backgroundColor: Colors.black,
         body: Center(
           child: Container(
-            width: 300,
+            width: 500,
             height: 250,
             decoration: BoxDecoration(
               color: Colors.yellow[800],
@@ -56,11 +61,11 @@ class _CounterDownAppState extends State<CounterDownApp> {
               // ignore: prefer_const_literals_to_create_immutables
               children: [
                 Container(
-                  padding: EdgeInsets.all(9),
-                  width: 80,
+                  padding: countdown >= 0  ? EdgeInsets.all(14) :EdgeInsets.all(60),
+                  width: 90,
                   height: 80,
                   decoration: BoxDecoration(
-                    color: Colors.yellow[800],
+                    color: Colors.blue[800],
                     border: Border.all(
                       color: Colors.black,
                       width: 2,
@@ -68,9 +73,9 @@ class _CounterDownAppState extends State<CounterDownApp> {
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Text(
-                    countdown.toString().padLeft(2, "0"),
+                    countdown > 0 ? countdown.toString().padLeft(2, "0") : '👌',
                     style: TextStyle(
-                      fontSize: 50,
+                    fontSize: countdown > 0 ?  50 : 40,
                       color: Colors.white,
                     ),
                   ),
@@ -89,14 +94,14 @@ class _CounterDownAppState extends State<CounterDownApp> {
                   height: 30,
                 ),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         foregroundColor: Colors.white,
                         backgroundColor: Colors.green,
-                        minimumSize: Size(88, 36),
-                        padding: EdgeInsets.symmetric(horizontal: 16),
+                        minimumSize: Size(90, 35),
+                        padding: EdgeInsets.symmetric(horizontal: 2),
                       ),
                       onPressed: () {
                         startTimer();
@@ -108,14 +113,33 @@ class _CounterDownAppState extends State<CounterDownApp> {
                       ),
                     ),
                     SizedBox(
-                      width: 25,
+                      width: 15,
                     ),
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         foregroundColor: Colors.white,
                         backgroundColor: Colors.red,
-                        minimumSize: Size(88, 36),
-                        padding: EdgeInsets.symmetric(horizontal: 16),
+                        minimumSize: Size(90, 35),
+                        padding: EdgeInsets.symmetric(horizontal: 2),
+                      ),
+                      onPressed: () {
+                        downSeconds!.cancel();
+                      },
+                      child: Text(
+                        'Stop Timer',
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    SizedBox(
+                      width: 15,
+                    ),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        foregroundColor: Colors.white,
+                        backgroundColor: Colors.red,
+                        minimumSize: Size(90, 35),
+                        padding: EdgeInsets.symmetric(horizontal: 2),
                       ),
                       onPressed: () {
                         rsetTimer();
